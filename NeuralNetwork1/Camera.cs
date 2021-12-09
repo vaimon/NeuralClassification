@@ -66,6 +66,7 @@ namespace NeuralNetwork1
             ticksLabel.Text = "Тики : " + sw.Elapsed.ToString();
             originalImageBox.Image = controller.GetOriginalImage();
             processedImgBox.Image = controller.GetProcessedImage();
+            statusLabel.Text = $"Кажется, это {controller.getCurrentType()}";
         }
 
         /// <summary>
@@ -77,9 +78,14 @@ namespace NeuralNetwork1
             UpdateFormFields();
             return;
         }
-        public Camera()
+
+        private BaseNetwork neuralNetwork;
+        private DatasetProcessor dataset;
+        public Camera(BaseNetwork network, DatasetProcessor datasetProcessor)
         {
             InitializeComponent();
+            neuralNetwork = network;
+            dataset = datasetProcessor;
             // Список камер получаем
             videoDevicesList = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             foreach (FilterInfo videoDevice in videoDevicesList)
@@ -94,7 +100,7 @@ namespace NeuralNetwork1
             {
                 MessageBox.Show("А нет у вас камеры!", "Ошибочка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            controller = new Controller(new FormUpdateDelegate(UpdateFormFields));
+            controller = new Controller(new FormUpdateDelegate(UpdateFormFields),network,dataset);
             //            updateTmr = new System.Threading.Timer(Tick, evnt, 500, 100);
         }
 
@@ -197,6 +203,7 @@ namespace NeuralNetwork1
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             controller.settings.processImg = checkBox1.Checked;
+            statusLabel.Visible = checkBox1.Checked;
         }
 
         private void MainForm_Load(object sender, EventArgs e)

@@ -30,11 +30,13 @@ namespace NeuralNetwork1
 
 
         private FormUpdateDelegate formUpdateDelegate = null;
-
+        
         /// <summa>
         /// Анализатор изображения - выполняет преобразования изображения с камеры и сопоставление с шаблонами
         /// </summary>
-        public MagicEye processor = new MagicEye();
+        public MagicEye processor;
+
+        
 
         /// <summary>
         /// Проверить, работает ли это
@@ -60,9 +62,10 @@ namespace NeuralNetwork1
         /// Класс чтобы править ими всеми - и художником, и певцом, и мудрецом
         /// </summary>
         /// <param name="updater"></param>
-        public Controller(FormUpdateDelegate updater)
+        public Controller(FormUpdateDelegate updater, BaseNetwork network, DatasetProcessor dataset)
         {
             formUpdateDelegate = updater;
+            processor = new MagicEye(network, dataset);
         }
 
         /// <summary>
@@ -106,7 +109,10 @@ namespace NeuralNetwork1
             return processor.processed;
         }
 
-
+        public string getCurrentType()
+        {
+            return DatasetProcessor.LetterTypeToString(processor.currentType);
+        }
 
     }
 }

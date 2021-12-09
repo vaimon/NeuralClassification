@@ -81,10 +81,13 @@ namespace NeuralNetwork1
         /// </summary>
         public Settings settings = new Settings();
 
-
-
-        public MagicEye()
+        
+        private BaseNetwork network;
+        private DatasetProcessor dataset;
+        public MagicEye(BaseNetwork network, DatasetProcessor dataset)
         {
+            this.network = network;
+            this.dataset = dataset;
         }
 
         public bool ProcessImage(Bitmap bitmap)
@@ -127,78 +130,27 @@ namespace NeuralNetwork1
             AForge.Imaging.Filters.BradleyLocalThresholding threshldFilter = new AForge.Imaging.Filters.BradleyLocalThresholding();
             threshldFilter.PixelBrightnessDifferenceLimit = settings.differenceLim;
             threshldFilter.ApplyInPlace(uProcessed);
-
-
+            
+            processed = uProcessed.ToManagedImage();
+            
             if (settings.processImg)
             {
-
-                string info = processSample(ref uProcessed);
-                Font f = new Font(FontFamily.GenericSansSerif, 20);
-
+                currentType = processSample(processed);
             }
-
-            processed = uProcessed.ToManagedImage();
 
             return true;
         }
+        
+        public LetterType currentType { get; set; }
 
         /// <summary>
         /// Обработка одного сэмпла
         /// </summary>
         /// <param name="index"></param>
-        private string processSample(ref AForge.Imaging.UnmanagedImage unmanaged)
+        private LetterType processSample(Bitmap bitmap)
         {
-            string rez = "Обработка";
-
-            ///  Инвертируем изображение
-            AForge.Imaging.Filters.Invert InvertFilter = new AForge.Imaging.Filters.Invert();
-            InvertFilter.ApplyInPlace(unmanaged);
-
-            ///    Создаём BlobCounter, выдёргиваем самый большой кусок, масштабируем, пересечение и сохраняем
-            ///    изображение в эксклюзивном использовании
-            AForge.Imaging.BlobCounterBase bc = new AForge.Imaging.BlobCounter();
-
-            bc.FilterBlobs = true;
-            bc.MinWidth = 3;
-            bc.MinHeight = 3;
-            // Упорядочиваем по размеру
-            bc.ObjectsOrder = AForge.Imaging.ObjectsOrder.Size;
-            // Обрабатываем картинку
-
-            bc.ProcessImage(unmanaged);
-
-            Rectangle[] rects = bc.GetObjectsRectangles();
-            rez = "Насчитали " + rects.Length.ToString() + " прямоугольников!";
-            //if (rects.Length == 0)
-            //{
-            //    finalPics[r, c] = AForge.Imaging.UnmanagedImage.FromManagedImage(new Bitmap(100, 100));
-            //    return 0;
-            //}
-
-            // К сожалению, код с использованием подсчёта blob'ов не работает, поэтому просто высчитываем максимальное покрытие
-            // для всех блобов - для нескольких цифр, к примеру, 16, можем получить две области - отдельно для 1, и отдельно для 6.
-            // Строим оболочку, включающую все блоки. Решение плохое, требуется доработка
-            int lx = unmanaged.Width;
-            int ly = unmanaged.Height;
-            int rx = 0;
-            int ry = 0;
-            for (int i = 0; i < rects.Length; ++i)
-            {
-                if (lx > rects[i].X) lx = rects[i].X;
-                if (ly > rects[i].Y) ly = rects[i].Y;
-                if (rx < rects[i].X + rects[i].Width) rx = rects[i].X + rects[i].Width;
-                if (ry < rects[i].Y + rects[i].Height) ry = rects[i].Y + rects[i].Height;
-            }
-
-            // Обрезаем края, оставляя только центральные блобчики
-            AForge.Imaging.Filters.Crop cropFilter = new AForge.Imaging.Filters.Crop(new Rectangle(lx, ly, rx - lx, ry - ly));
-            unmanaged = cropFilter.Apply(unmanaged);
-
-            //  Масштабируем до 100x100
-            AForge.Imaging.Filters.ResizeBilinear scaleFilter = new AForge.Imaging.Filters.ResizeBilinear(100, 100);
-            unmanaged = scaleFilter.Apply(unmanaged);
-
-            return rez;
+            Sample s = dataset.getSample(bitmap);
+            return network.Predict(s);
         }
 
     }

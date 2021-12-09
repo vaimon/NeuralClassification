@@ -7,7 +7,7 @@ using System.Linq;
 namespace NeuralNetwork1
 {
     using FastBitmap;
-    public enum LetterType : byte { SH = 0, N, G, E, SOFT, Undef };
+    public enum LetterType : byte { SH = 0, N, G, E, P, T, TS, Z, A, SOFT, Undef };
     public class DatasetProcessor
     {
         public static string LetterTypeToString(LetterType type)
@@ -24,6 +24,16 @@ namespace NeuralNetwork1
                     return "Е";
                 case LetterType.SOFT:
                     return "Ь";
+                case LetterType.Z:
+                    return "З";
+                case LetterType.T:
+                    return "Т";
+                case LetterType.TS:
+                    return "Ц";
+                case LetterType.P:
+                    return "П";
+                case LetterType.A:
+                    return "А";
                 case LetterType.Undef:
                     return "Неизвестно";
                 default:
@@ -46,6 +56,11 @@ namespace NeuralNetwork1
             structure[LetterType.N] = new List<string>();
             structure[LetterType.SOFT] = new List<string>();
             structure[LetterType.SH] = new List<string>();
+            structure[LetterType.A] = new List<string>();
+            structure[LetterType.P] = new List<string>();
+            structure[LetterType.T] = new List<string>();
+            structure[LetterType.Z] = new List<string>();
+            structure[LetterType.TS] = new List<string>();
             foreach (var letter in structure)
             {
                 DirectoryInfo d = new DirectoryInfo(databaseLocation + $"\\{LetterTypeToString(letter.Key)}");
@@ -132,6 +147,25 @@ namespace NeuralNetwork1
             }
             return Tuple.Create<Sample, Bitmap>(new Sample(input,LetterCount,type),bitmap);
         }
-        
+
+        public Sample getSample(Bitmap bitmap)
+        {
+            double[] input = new double[200];
+            using (FastBitmap fb = new FastBitmap(bitmap))
+            {
+                for (int x = 0; x < 200; x++)
+                {
+                    for (int y = 0; y < 200; y++)
+                    {
+                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                        {
+                            input[x]++;
+                        }
+                    }
+                }
+            }
+
+            return new Sample(input, LetterCount);
+        }
     }
 }
