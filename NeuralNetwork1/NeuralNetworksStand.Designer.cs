@@ -48,7 +48,6 @@
             this.AccuracyCounter = new System.Windows.Forms.TrackBar();
             this.EpochesCounter = new System.Windows.Forms.NumericUpDown();
             this.TrainingSizeCounter = new System.Windows.Forms.NumericUpDown();
-            this.trainOneButton = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.infoStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -207,7 +206,7 @@
             this.netStructureBox.Name = "netStructureBox";
             this.netStructureBox.Size = new System.Drawing.Size(178, 26);
             this.netStructureBox.TabIndex = 18;
-            this.netStructureBox.Text = "400;500;20;2";
+            this.netStructureBox.Text = "200;500;20;2";
             // 
             // recreateNetButton
             // 
@@ -226,7 +225,7 @@
             this.classCounter.Location = new System.Drawing.Point(250, 192);
             this.classCounter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.classCounter.Maximum = new decimal(new int[] {
-            4,
+            5,
             0,
             0,
             0});
@@ -336,17 +335,6 @@
             0,
             0});
             // 
-            // trainOneButton
-            // 
-            this.trainOneButton.Location = new System.Drawing.Point(771, 738);
-            this.trainOneButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.trainOneButton.Name = "trainOneButton";
-            this.trainOneButton.Size = new System.Drawing.Size(189, 46);
-            this.trainOneButton.TabIndex = 8;
-            this.trainOneButton.Text = "Обучить образцу";
-            this.trainOneButton.UseVisualStyleBackColor = true;
-            this.trainOneButton.Click += new System.EventHandler(this.btnTrainOne_Click);
-            // 
             // progressBar1
             // 
             this.progressBar1.Location = new System.Drawing.Point(776, 652);
@@ -413,7 +401,6 @@
             this.Controls.Add(this.elapsedTimeLabel);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.trainOneButton);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
@@ -446,7 +433,6 @@
         private System.Windows.Forms.Button recreateNetButton;
         private System.Windows.Forms.NumericUpDown classCounter;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button trainOneButton;
         private System.Windows.Forms.TextBox netStructureBox;
 		private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.StatusStrip statusStrip1;

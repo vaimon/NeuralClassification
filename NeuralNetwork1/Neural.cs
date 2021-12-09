@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
+using Accord.Math;
 
 namespace NeuralNetwork1
 {
@@ -22,12 +23,12 @@ namespace NeuralNetwork1
         /// <summary>
         /// Действительный класс образа. Указывается учителем
         /// </summary>
-        public FigureType actualClass;
+        public LetterType actualClass;
 
         /// <summary>
         /// Распознанный класс - определяется после обработки
         /// </summary>
-        public FigureType recognizedClass;
+        public LetterType recognizedClass;
 
         public double[] outputVector;
 
@@ -36,15 +37,15 @@ namespace NeuralNetwork1
         /// </summary>
         /// <param name="inputValues"></param>
         /// <param name="sampleClass"></param>
-        public Sample(double[] inputValues, int classesCount, FigureType sampleClass = FigureType.Undef)
+        public Sample(double[] inputValues, int classesCount, LetterType sampleClass = LetterType.Undef)
         {
             //  Клонируем массивчик
             input = (double[]) inputValues.Clone();
             Output = new double[classesCount];
-            if (sampleClass != FigureType.Undef) Output[(int) sampleClass] = 1;
+            if (sampleClass != LetterType.Undef) Output[(int) sampleClass] = 1;
 
 
-            recognizedClass = FigureType.Undef;
+            recognizedClass = LetterType.Undef;
             actualClass = sampleClass;
             
             outputVector = new double[classesCount];
@@ -62,7 +63,7 @@ namespace NeuralNetwork1
         /// <summary>
         /// Обработка реакции сети на данный образ на основе вектора выходов сети
         /// </summary>
-        public FigureType ProcessPrediction(double[] neuralOutput)
+        public LetterType ProcessPrediction(double[] neuralOutput)
         {
             Output = neuralOutput;
             if (error == null)
@@ -73,7 +74,7 @@ namespace NeuralNetwork1
             for (int i = 0; i < Output.Length; ++i)
             {
                 error[i] = (Output[i] - (i == (int) actualClass ? 1 : 0));
-                if (Output[i] > Output[(int) recognizedClass]) recognizedClass = (FigureType) i;
+                if (Output[i] > Output[(int) recognizedClass]) recognizedClass = (LetterType) i;
             }
 
             return recognizedClass;
@@ -174,6 +175,11 @@ namespace NeuralNetwork1
         {
             get => samples[i];
             set => samples[i] = value;
+        }
+
+        public void shuffle()
+        {
+            samples.Shuffle();
         }
 
         public double TestNeuralNetwork(BaseNetwork network)

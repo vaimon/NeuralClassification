@@ -43,7 +43,7 @@ namespace NeuralNetwork1
         /// </summary>
         /// <param name="sample">Фигура, которую необходимо определить</param>
         /// <returns></returns>
-        public FigureType Predict(Sample sample)
+        public LetterType Predict(Sample sample)
         {
             return sample.ProcessPrediction(Compute(sample.input));
         }

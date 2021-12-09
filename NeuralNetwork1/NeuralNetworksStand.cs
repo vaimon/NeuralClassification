@@ -13,7 +13,8 @@ namespace NeuralNetwork1
         /// <summary>
         /// Генератор изображений (образов)
         /// </summary>
-        GenerateImage generator = new GenerateImage();
+        //GenerateImage generator = new GenerateImage();
+        private DatasetProcessor dataset = new DatasetProcessor();
 
         /// <summary>
         /// Текущая выбранная через селектор нейросеть
@@ -43,7 +44,7 @@ namespace NeuralNetwork1
             this.networksFabric = networksFabric;
             netTypeBox.Items.AddRange(this.networksFabric.Keys.Select(s => (object) s).ToArray());
             netTypeBox.SelectedIndex = 0;
-            generator.FigureCount = (int) classCounter.Value;
+            dataset.LetterCount = (int) classCounter.Value;
             button3_Click(this, null);
             pictureBox1.Image = Properties.Resources.Title;
         }
@@ -62,26 +63,21 @@ namespace NeuralNetwork1
             elapsedTimeLabel.Text = "Затраченное время : " + elapsedTime.Duration().ToString(@"hh\:mm\:ss\:ff");
             progressBar1.Value = progressPercent;
         }
-
-
-        private void set_result(Sample figure)
-        {
-            label1.ForeColor = figure.Correct() ? Color.Green : Color.Red;
-
-            label1.Text = "Распознано : " + figure.recognizedClass;
-
-            //label8.Text = string.Join("\n", figure.Output.Select(d => d.ToString(CultureInfo.InvariantCulture)));
-            pictureBox1.Image = generator.GenBitmap();
-            pictureBox1.Invalidate();
-        }
+        
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            Sample fig = generator.GenerateFigure();
+            var fullSample = dataset.getSample();
 
-            Net.Predict(fig);
+            Net.Predict(fullSample.Item1);
+            
+            label1.ForeColor = fullSample.Item1.Correct() ? Color.Green : Color.Red;
 
-            set_result(fig);
+            label1.Text = "Распознано : " + DatasetProcessor.LetterTypeToString(fullSample.Item1.recognizedClass);
+
+            //label8.Text = string.Join("\n", figure.Output.Select(d => d.ToString(CultureInfo.InvariantCulture)));
+            pictureBox1.Image = fullSample.Item2;
+            pictureBox1.Invalidate();
         }
 
         private async Task<double> train_networkAsync(int training_size, int epoches, double acceptable_error,
@@ -92,13 +88,10 @@ namespace NeuralNetwork1
             label1.ForeColor = Color.Red;
             groupBox1.Enabled = false;
             pictureBox1.Enabled = false;
-            trainOneButton.Enabled = false;
 
             //  Создаём новую обучающую выборку
-            SamplesSet samples = new SamplesSet();
-
-            for (int i = 0; i < training_size; i++)
-                samples.AddSample(generator.GenerateFigure());
+            SamplesSet samples = dataset.getTrainDataset(training_size);
+            
             try
             {
                 //  Обучение запускаем асинхронно, чтобы не блокировать форму
@@ -109,7 +102,6 @@ namespace NeuralNetwork1
                 label1.ForeColor = Color.Green;
                 groupBox1.Enabled = true;
                 pictureBox1.Enabled = true;
-                trainOneButton.Enabled = true;
                 StatusLabel.Text = "Ошибка: " + f;
                 StatusLabel.ForeColor = Color.Green;
                 return f;
@@ -135,10 +127,7 @@ namespace NeuralNetwork1
             Enabled = false;
             //  Тут просто тестирование новой выборки
             //  Создаём новую обучающую выборку
-            SamplesSet samples = new SamplesSet();
-
-            for (int i = 0; i < (int) TrainingSizeCounter.Value; i++)
-                samples.AddSample(generator.GenerateFigure());
+            SamplesSet samples = dataset.getTestDataset((int) TrainingSizeCounter.Value);
 
             double accuracy = samples.TestNeuralNetwork(Net);
 
@@ -152,11 +141,11 @@ namespace NeuralNetwork1
         {
             //  Проверяем корректность задания структуры сети
             int[] structure = CurrentNetworkStructure();
-            if (structure.Length < 2 || structure[0] != 400 ||
-                structure[structure.Length - 1] != generator.FigureCount)
+            if (structure.Length < 2 || structure[0] != 200 ||
+                structure[structure.Length - 1] != dataset.LetterCount)
             {
                 MessageBox.Show(
-                    $"В сети должно быть более двух слоёв, первый слой должен содержать 400 нейронов, последний - ${generator.FigureCount}",
+                    $"В сети должно быть более двух слоёв, первый слой должен содержать 200 нейронов, последний - ${dataset.LetterCount}",
                     "Ошибка", MessageBoxButtons.OK);
                 return;
             }
@@ -175,23 +164,13 @@ namespace NeuralNetwork1
 
         private void classCounter_ValueChanged(object sender, EventArgs e)
         {
-            generator.FigureCount = (int) classCounter.Value;
+            dataset.LetterCount = (int) classCounter.Value;
             var vals = netStructureBox.Text.Split(';');
             if (!int.TryParse(vals.Last(), out _)) return;
             vals[vals.Length - 1] = classCounter.Value.ToString();
             netStructureBox.Text = vals.Aggregate((partialPhrase, word) => $"{partialPhrase};{word}");
         }
-
-        private void btnTrainOne_Click(object sender, EventArgs e)
-        {
-            if (Net == null) return;
-            Sample fig = generator.GenerateFigure();
-            pictureBox1.Image = generator.GenBitmap();
-            pictureBox1.Invalidate();
-            Net.Train(fig, 0.00005, parallelCheckBox.Checked);
-            set_result(fig);
-        }
-
+        
         private BaseNetwork CreateNetwork(string networkName)
         {
             var network = networksFabric[networkName](CurrentNetworkStructure());
