@@ -76,13 +76,13 @@
   <ItemGroup>
     <Compile Include="AccordNet.cs" />
     <Compile Include="BaseNetwork.cs" />
+    <Compile Include="ImageGenerator.cs" />
     <Compile Include="NeuralNetworksStand.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NeuralNetworksStand.Designer.cs">
       <DependentUpon>NeuralNetworksStand.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageGenerator.cs" />
     <Compile Include="Neural.cs" />
     <Compile Include="StudentNetwork.cs" />
     <Compile Include="Program.cs" />

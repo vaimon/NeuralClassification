@@ -30,7 +30,7 @@ namespace NeuralNetwork1
         /// <summary>
         /// Количество классов генерируемых фигур (4 - максимум)
         /// </summary>
-        public int FigureCount { get; set; } = 4;
+        public int FigureCount { get; set; } = 7;
 
         /// <summary>
         /// Диапазон смещения центра фигуры (по умолчанию +/- 20 пикселов от центра)
