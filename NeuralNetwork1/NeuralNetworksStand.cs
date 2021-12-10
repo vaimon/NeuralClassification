@@ -118,7 +118,7 @@ namespace NeuralNetwork1
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             train_networkAsync((int) TrainingSizeCounter.Value, (int) EpochesCounter.Value,
-                (100 - AccuracyCounter.Value) / 100.0, parallelCheckBox.Checked);
+                (100 - AccuracyCounter.Value) / 100.0, false);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 

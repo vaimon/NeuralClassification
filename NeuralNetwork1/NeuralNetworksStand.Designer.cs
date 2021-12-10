@@ -23,8 +23,8 @@
         #region Код, автоматически созданный конструктором форм Windows
 
         /// <summary>
-        /// Требуемый метод для поддержки конструктора — не изменяйте 
-        /// содержимое этого метода с помощью редактора кода.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -38,7 +38,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
             this.netTypeBox = new System.Windows.Forms.ComboBox();
-            this.parallelCheckBox = new System.Windows.Forms.CheckBox();
             this.netStructureBox = new System.Windows.Forms.TextBox();
             this.recreateNetButton = new System.Windows.Forms.Button();
             this.classCounter = new System.Windows.Forms.NumericUpDown();
@@ -60,12 +59,12 @@
             label5 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.classCounter)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.AccuracyCounter)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EpochesCounter)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TrainingSizeCounter)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.classCounter)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.AccuracyCounter)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.EpochesCounter)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.TrainingSizeCounter)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -144,7 +143,6 @@
             // 
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.netTypeBox);
-            this.groupBox1.Controls.Add(this.parallelCheckBox);
             this.groupBox1.Controls.Add(this.netStructureBox);
             this.groupBox1.Controls.Add(this.recreateNetButton);
             this.groupBox1.Controls.Add(this.classCounter);
@@ -187,19 +185,6 @@
             this.netTypeBox.Size = new System.Drawing.Size(180, 28);
             this.netTypeBox.TabIndex = 20;
             // 
-            // parallelCheckBox
-            // 
-            this.parallelCheckBox.AutoSize = true;
-            this.parallelCheckBox.Checked = true;
-            this.parallelCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.parallelCheckBox.Location = new System.Drawing.Point(51, 374);
-            this.parallelCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.parallelCheckBox.Name = "parallelCheckBox";
-            this.parallelCheckBox.Size = new System.Drawing.Size(208, 24);
-            this.parallelCheckBox.TabIndex = 19;
-            this.parallelCheckBox.Text = "Параллельный расчёт";
-            this.parallelCheckBox.UseVisualStyleBackColor = true;
-            // 
             // netStructureBox
             // 
             this.netStructureBox.Location = new System.Drawing.Point(250, 68);
@@ -225,24 +210,12 @@
             // 
             this.classCounter.Location = new System.Drawing.Point(250, 192);
             this.classCounter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.classCounter.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.classCounter.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.classCounter.Maximum = new decimal(new int[] {10, 0, 0, 0});
+            this.classCounter.Minimum = new decimal(new int[] {1, 0, 0, 0});
             this.classCounter.Name = "classCounter";
             this.classCounter.Size = new System.Drawing.Size(180, 26);
             this.classCounter.TabIndex = 16;
-            this.classCounter.Value = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
+            this.classCounter.Value = new decimal(new int[] {2, 0, 0, 0});
             this.classCounter.ValueChanged += new System.EventHandler(this.classCounter_ValueChanged);
             // 
             // label10
@@ -294,47 +267,23 @@
             // 
             this.EpochesCounter.Location = new System.Drawing.Point(250, 151);
             this.EpochesCounter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.EpochesCounter.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.EpochesCounter.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.EpochesCounter.Maximum = new decimal(new int[] {1000000, 0, 0, 0});
+            this.EpochesCounter.Minimum = new decimal(new int[] {1, 0, 0, 0});
             this.EpochesCounter.Name = "EpochesCounter";
             this.EpochesCounter.Size = new System.Drawing.Size(180, 26);
             this.EpochesCounter.TabIndex = 8;
-            this.EpochesCounter.Value = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
+            this.EpochesCounter.Value = new decimal(new int[] {20, 0, 0, 0});
             // 
             // TrainingSizeCounter
             // 
             this.TrainingSizeCounter.Location = new System.Drawing.Point(250, 109);
             this.TrainingSizeCounter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.TrainingSizeCounter.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.TrainingSizeCounter.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.TrainingSizeCounter.Maximum = new decimal(new int[] {100000, 0, 0, 0});
+            this.TrainingSizeCounter.Minimum = new decimal(new int[] {1, 0, 0, 0});
             this.TrainingSizeCounter.Name = "TrainingSizeCounter";
             this.TrainingSizeCounter.Size = new System.Drawing.Size(180, 26);
             this.TrainingSizeCounter.TabIndex = 6;
-            this.TrainingSizeCounter.Value = new decimal(new int[] {
-            700,
-            0,
-            0,
-            0});
+            this.TrainingSizeCounter.Value = new decimal(new int[] {700, 0, 0, 0});
             // 
             // progressBar1
             // 
@@ -349,12 +298,11 @@
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.infoStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 800);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.infoStatusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 802);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1222, 32);
+            this.statusStrip1.Size = new System.Drawing.Size(1222, 30);
             this.statusStrip1.TabIndex = 11;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -420,18 +368,17 @@
             this.MaximizeBox = false;
             this.Name = "NeuralNetworksStand";
             this.Text = "Банальный студенческий перспетрон";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.classCounter)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.AccuracyCounter)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EpochesCounter)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TrainingSizeCounter)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.classCounter)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.AccuracyCounter)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.EpochesCounter)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.TrainingSizeCounter)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -452,7 +399,6 @@
         private System.Windows.Forms.Label elapsedTimeLabel;
         private System.Windows.Forms.Button testNetButton;
         private System.Windows.Forms.Button netTrainButton;
-        private System.Windows.Forms.CheckBox parallelCheckBox;
         private System.Windows.Forms.ToolStripMenuItem вапрвапрToolStripMenuItem;
         private System.Windows.Forms.ComboBox netTypeBox;
         private System.Windows.Forms.Label label11;

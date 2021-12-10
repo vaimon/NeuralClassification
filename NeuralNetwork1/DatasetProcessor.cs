@@ -72,27 +72,29 @@ namespace NeuralNetwork1
         public SamplesSet getTestDataset(int count)
         {
             SamplesSet set = new SamplesSet();
-            for (int i = 0; i < count; i++)
+            for (int type = 0; type < LetterCount; type++)
             {
-                var type = (LetterType) random.Next(LetterCount);
-                var sample = structure[type][random.Next(structure[type].Count)];
-                double[] input = new double[200];
-                using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
+                for (int i = 0; i < 100; i++)
                 {
-                    for (int x = 0; x < 200; x++)
+                    var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
+                    double[] input = new double[200];
+                    using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
                     {
-                        for (int y = 0; y < 200; y++)
+                        for (int x = 0; x < 200; x++)
                         {
-                            if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                            for (int y = 0; y < 200; y++)
                             {
-                                input[x]++;
+                                if (fb[x, y].ToArgb() != Color.White.ToArgb())
+                                {
+                                    input[x]++;
+                                }
                             }
                         }
                     }
+                    set.AddSample(new Sample(input, LetterCount, (LetterType)type));
                 }
-                set.AddSample(new Sample(input, LetterCount, type));
             }
-
+            set.shuffle();
             return set;
         }
         
