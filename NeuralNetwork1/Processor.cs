@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using AForge.Imaging.Filters;
 
 namespace NeuralNetwork1
 {
@@ -100,10 +101,10 @@ namespace NeuralNetwork1
             //  Можно было, конечено, и не кидаться эксепшенами в истерике, но идите и купите себе нормальную камеру!
             int side = bitmap.Height;
 
-
+            int xborder = bitmap.Width / 10, yborder = bitmap.Height / 10;
             //  Мы сейчас занимаемся тем, что красиво оформляем входной кадр, чтобы вывести его на форму
             //Rectangle cropRect = new Rectangle((bitmap.Width - bitmap.Height) / 2 + settings.left + settings.border, settings.top + settings.border, side, side);
-            Rectangle cropRect = new Rectangle(settings.border, settings.border, bitmap.Width - settings.border, bitmap.Height - settings.border);
+            Rectangle cropRect = new Rectangle(xborder, yborder, bitmap.Width - xborder, bitmap.Height - yborder);
             //  Тут создаём новый битмапчик, который будет исходным изображением
 
             original = bitmap;
@@ -130,6 +131,22 @@ namespace NeuralNetwork1
             AForge.Imaging.Filters.BradleyLocalThresholding threshldFilter = new AForge.Imaging.Filters.BradleyLocalThresholding();
             threshldFilter.PixelBrightnessDifferenceLimit = settings.differenceLim;
             threshldFilter.ApplyInPlace(uProcessed);
+            
+            Median medianFilter = new Median();
+            medianFilter.ApplyInPlace(uProcessed);
+
+            AForge.Imaging.BlobCounter blobber = new AForge.Imaging.BlobCounter();
+            blobber.MinHeight = 5;
+            blobber.MinWidth = 5;
+            blobber.ObjectsOrder = AForge.Imaging.ObjectsOrder.XY;
+
+            AForge.Imaging.Filters.Invert InvertFilter = new AForge.Imaging.Filters.Invert();
+            InvertFilter.ApplyInPlace(uProcessed);
+            
+            blobber.ProcessImage(uProcessed);
+            var rects = blobber.GetObjectsRectangles();
+            cropFilter = new AForge.Imaging.Filters.Crop(rects.First());
+            var croppedProcessed = cropFilter.Apply(uProcessed);
             
             processed = uProcessed.ToManagedImage();
             

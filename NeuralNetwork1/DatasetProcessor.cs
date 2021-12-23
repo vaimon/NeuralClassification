@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using AForge.Imaging.Filters;
 
 namespace NeuralNetwork1
 {
@@ -68,6 +69,30 @@ namespace NeuralNetwork1
             }
         }
 
+        double[] processImage(Bitmap original)
+        {
+            var uProcessed = AForge.Imaging.UnmanagedImage.FromManagedImage(original);
+
+            AForge.Imaging.BlobCounter blobber = new AForge.Imaging.BlobCounter();
+            blobber.MinHeight = 5;
+            blobber.MinWidth = 5;
+            blobber.ObjectsOrder = AForge.Imaging.ObjectsOrder.XY;
+
+            AForge.Imaging.Filters.Invert InvertFilter = new AForge.Imaging.Filters.Invert();
+            InvertFilter.ApplyInPlace(uProcessed);
+            
+            blobber.ProcessImage(uProcessed);
+            var rects = blobber.GetObjectsRectangles().Where(x=> x.Width > 5 && x.Height > 5);
+            double scaleFactor = rects.Max(x => x.Width);
+            var res = rects.Take(5).Select(x => x.Width / scaleFactor).Where(x=> x > 0.1).ToList();
+            while (res.Count < 5)
+            {
+                res.Add(0);
+            }
+
+            return res.ToArray();
+        }
+
         // Здесь мы полагаемся чисто на рандом
         public SamplesSet getTestDataset(int count)
         {
@@ -77,21 +102,7 @@ namespace NeuralNetwork1
                 for (int i = 0; i < 100; i++)
                 {
                     var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
-                    double[] input = new double[200];
-                    using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
-                    {
-                        for (int x = 0; x < 200; x++)
-                        {
-                            for (int y = 0; y < 200; y++)
-                            {
-                                if (fb[x, y].ToArgb() != Color.White.ToArgb())
-                                {
-                                    input[x]++;
-                                }
-                            }
-                        }
-                    }
-                    set.AddSample(new Sample(input, LetterCount, (LetterType)type));
+                    set.AddSample(new Sample(processImage(new Bitmap(sample)), LetterCount, (LetterType)type));
                 }
             }
             set.shuffle();
@@ -107,21 +118,7 @@ namespace NeuralNetwork1
                 for (int i = 0; i < count/LetterCount; i++)
                 {
                     var sample = structure[(LetterType)type][random.Next(structure[(LetterType)type].Count)];
-                    double[] input = new double[200];
-                    using (FastBitmap fb = new FastBitmap(new Bitmap(sample)))
-                    {
-                        for (int x = 0; x < 200; x++)
-                        {
-                            for (int y = 0; y < 200; y++)
-                            {
-                                if (fb[x, y].ToArgb() != Color.White.ToArgb())
-                                {
-                                    input[x]++;
-                                }
-                            }
-                        }
-                    }
-                    set.AddSample(new Sample(input, LetterCount, (LetterType)type));
+                    set.AddSample(new Sample(processImage(new Bitmap(sample)), LetterCount, (LetterType)type));
                 }
             }
             set.shuffle();
@@ -132,42 +129,13 @@ namespace NeuralNetwork1
         {
             var type = (LetterType) random.Next(LetterCount);
             var sample = structure[type][random.Next(structure[type].Count)];
-            double[] input = new double[200];
             var bitmap = new Bitmap(sample);
-            using (FastBitmap fb = new FastBitmap(bitmap))
-            {
-                for (int x = 0; x < 200; x++)
-                {
-                    for (int y = 0; y < 200; y++)
-                    {
-                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
-                        {
-                            input[x]++;
-                        }
-                    }
-                }
-            }
-            return Tuple.Create<Sample, Bitmap>(new Sample(input,LetterCount,type),bitmap);
+            return Tuple.Create<Sample, Bitmap>(new Sample(processImage(bitmap),LetterCount,type),bitmap);
         }
 
         public Sample getSample(Bitmap bitmap)
         {
-            double[] input = new double[200];
-            using (FastBitmap fb = new FastBitmap(bitmap))
-            {
-                for (int x = 0; x < 200; x++)
-                {
-                    for (int y = 0; y < 200; y++)
-                    {
-                        if (fb[x, y].ToArgb() != Color.White.ToArgb())
-                        {
-                            input[x]++;
-                        }
-                    }
-                }
-            }
-
-            return new Sample(input, LetterCount);
+            return new Sample(processImage(bitmap), LetterCount);
         }
     }
 }

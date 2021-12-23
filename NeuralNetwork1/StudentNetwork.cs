@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace NeuralNetwork1
 {
+    [Serializable]
     class Neuron
     {
         public static Func<double, double> activationFunction;
@@ -73,9 +74,10 @@ namespace NeuralNetwork1
         }
     }
 
+    [Serializable]
     public class StudentNetwork : BaseNetwork
     {
-        private const int hiddenLayersCount = 2;
+        
         private const double learningRate = 0.1;
 
         private Neuron biasNeuron;

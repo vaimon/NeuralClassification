@@ -141,11 +141,11 @@ namespace NeuralNetwork1
         {
             //  Проверяем корректность задания структуры сети
             int[] structure = CurrentNetworkStructure();
-            if (structure.Length < 2 || structure[0] != 200 ||
+            if (structure.Length < 2 || structure[0] != 5 ||
                 structure[structure.Length - 1] != dataset.LetterCount)
             {
                 MessageBox.Show(
-                    $"В сети должно быть более двух слоёв, первый слой должен содержать 200 нейронов, последний - ${dataset.LetterCount}",
+                    $"В сети должно быть более двух слоёв, первый слой должен содержать 5 нейронов, последний - ${dataset.LetterCount}",
                     "Ошибка", MessageBoxButtons.OK);
                 return;
             }
