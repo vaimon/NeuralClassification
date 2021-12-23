@@ -110,5 +110,10 @@ namespace NeuralNetwork1
         {
             return network.Compute(input);
         }
+
+        public override void save(string filename)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -29,6 +29,10 @@ namespace NeuralNetwork1
 
                 return networksCache[selectedItem];
             }
+            set
+            {
+                networksCache["Загруженное"] = value;
+            }
         }
 
         private readonly Dictionary<string, Func<int[], BaseNetwork>> networksFabric;
@@ -197,6 +201,18 @@ namespace NeuralNetwork1
         {
             var form = new Camera(Net, dataset);
             form.Show();
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.ShowDialog();
+            Net.save(saveFileDialog1.FileName);
+        }
+
+        private void buttonLoad_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+            Net = StudentNetwork.readFromFile(openFileDialog1.FileName);
         }
     }
 }

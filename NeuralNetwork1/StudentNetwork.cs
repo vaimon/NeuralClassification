@@ -1,22 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using ProtoBuf;
 
 namespace NeuralNetwork1
 {
-    [Serializable]
+    [ProtoContract]
     class Neuron
     {
         public static Func<double, double> activationFunction;
         public static Func<double, double> activationFunctionDerivative;
-
+        [ProtoMember(1)]
         public int id;
+        [ProtoMember(2)]
         public double Output;
+        [ProtoMember(3)]
         public int layer;
 
+        [ProtoMember(4)]
         public double error;
 
         // Веса связей от предыдущего слоя, где 0 элемент - bias, остальные - нейроны прошлого слоя в произвольном порядке (т.к. сеть полносвязная)
+        [ProtoMember(5)]
         public double[] weightsToPrevLayer;
 
         public void setInput(double input)
@@ -57,6 +64,7 @@ namespace NeuralNetwork1
             {
                 Output = 1;
             }
+            
 
             // Веса с байасами инициализируем для всех слоёв, кроме входного и самого байаса
             if (layer < 1)
@@ -72,20 +80,70 @@ namespace NeuralNetwork1
                 }
             }
         }
+
+        public Neuron()
+        {
+        }
+    }
+    [ProtoContract]
+    class Layer
+    {
+        [ProtoMember(1)]
+        public Neuron[] neurons;
+
+        public Neuron this[int index]
+        {
+            get => neurons[index];
+            set => neurons[index] = value;
+        }
+
+        public Layer(int capacity)
+        {
+            neurons = new Neuron[capacity];
+        }
+
+        public Layer()
+        {
+        }
+
+        public int Length => neurons.Length;
+
+        public IEnumerable<Neuron> Select(Func<Neuron, Neuron> selector) => neurons.Select(selector);
+        public IEnumerable<double> Select(Func<Neuron, double> selector) => neurons.Select(selector);
     }
 
-    [Serializable]
+    [ProtoContract]
     public class StudentNetwork : BaseNetwork
     {
-        
+        [ProtoMember(1)]
         private const double learningRate = 0.1;
-
+        [ProtoMember(2)]
         private Neuron biasNeuron;
-        private List<Neuron[]> layers;
+        [ProtoMember(3)]
+        private List<Layer> layers;
+        [ProtoMember(4)]
+        public Func<double[], double[], double> lossFunction;
+        [ProtoMember(5)]
+        public Func<double, double, double> lossFunctionDerivative;
 
-        private Func<double[], double[], double> lossFunction;
-        private Func<double, double, double> lossFunctionDerivative;
+        public StudentNetwork()
+        {
+        }
 
+        public static StudentNetwork readFromFile(string filename)
+        {
+            Neuron.activationFunction = s => 1.0 / (1.0 + Math.Exp(-s));
+            Neuron.activationFunctionDerivative = s => s * (1 - s);
+            StudentNetwork network;
+            using(MemoryStream memStream = new MemoryStream())
+            {
+                var arrBytes = File.ReadAllBytes(filename);
+                memStream.Write(arrBytes, 0, arrBytes.Length);
+                memStream.Seek(0, SeekOrigin.Begin);
+                network = Serializer.Deserialize<StudentNetwork>(memStream);
+            }
+            return network;
+        }
         public StudentNetwork(int[] structure)
         {
             if (structure.Length < 3)
@@ -114,11 +172,11 @@ namespace NeuralNetwork1
             biasNeuron = new Neuron(0, -1, -1, random);
             int id = 1;
 
-            layers = new List<Neuron[]>();
+            layers = new List<Layer>();
 
             for (int layer = 0; layer < structure.Length; layer++)
             {
-                layers.Add(new Neuron[structure[layer]]);
+                layers.Add(new Layer(structure[layer]));
                 for (int i = 0; i < structure[layer]; i++)
                 {
                     if (layer == 0)
@@ -192,8 +250,9 @@ namespace NeuralNetwork1
 
             for (int layer = layers.Count - 1; layer >= 1; layer--)
             {
-                foreach (var neuron in layers[layer])
+                for (int k = 0; k < layers[layer].Length; k++)
                 {
+                    var neuron = layers[layer][k];
                     // Применяем производную функции активации
                     neuron.error *= Neuron.activationFunctionDerivative(neuron.Output);
 
@@ -302,6 +361,15 @@ namespace NeuralNetwork1
 
             forwardPropagation(input);
             return layers.Last().Select(n => n.Output).ToArray();
+        }
+
+        public override void save(string filename)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Serializer.Serialize(ms, this);
+                File.WriteAllBytes(filename,ms.ToArray());
+            }
         }
     }
 }

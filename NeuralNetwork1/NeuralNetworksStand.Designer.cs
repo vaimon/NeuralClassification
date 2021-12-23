@@ -54,17 +54,21 @@
             this.вапрвапрToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusLabel = new System.Windows.Forms.Label();
             this.btnCamera = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonLoad = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             label2 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize) (this.classCounter)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize) (this.AccuracyCounter)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize) (this.EpochesCounter)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize) (this.TrainingSizeCounter)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.classCounter)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AccuracyCounter)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.EpochesCounter)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TrainingSizeCounter)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -210,12 +214,24 @@
             // 
             this.classCounter.Location = new System.Drawing.Point(250, 192);
             this.classCounter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.classCounter.Maximum = new decimal(new int[] {10, 0, 0, 0});
-            this.classCounter.Minimum = new decimal(new int[] {1, 0, 0, 0});
+            this.classCounter.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.classCounter.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.classCounter.Name = "classCounter";
             this.classCounter.Size = new System.Drawing.Size(180, 26);
             this.classCounter.TabIndex = 16;
-            this.classCounter.Value = new decimal(new int[] {2, 0, 0, 0});
+            this.classCounter.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.classCounter.ValueChanged += new System.EventHandler(this.classCounter_ValueChanged);
             // 
             // label10
@@ -267,23 +283,47 @@
             // 
             this.EpochesCounter.Location = new System.Drawing.Point(250, 151);
             this.EpochesCounter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.EpochesCounter.Maximum = new decimal(new int[] {1000000, 0, 0, 0});
-            this.EpochesCounter.Minimum = new decimal(new int[] {1, 0, 0, 0});
+            this.EpochesCounter.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.EpochesCounter.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.EpochesCounter.Name = "EpochesCounter";
             this.EpochesCounter.Size = new System.Drawing.Size(180, 26);
             this.EpochesCounter.TabIndex = 8;
-            this.EpochesCounter.Value = new decimal(new int[] {20, 0, 0, 0});
+            this.EpochesCounter.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
             // 
             // TrainingSizeCounter
             // 
             this.TrainingSizeCounter.Location = new System.Drawing.Point(250, 109);
             this.TrainingSizeCounter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.TrainingSizeCounter.Maximum = new decimal(new int[] {100000, 0, 0, 0});
-            this.TrainingSizeCounter.Minimum = new decimal(new int[] {1, 0, 0, 0});
+            this.TrainingSizeCounter.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.TrainingSizeCounter.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.TrainingSizeCounter.Name = "TrainingSizeCounter";
             this.TrainingSizeCounter.Size = new System.Drawing.Size(180, 26);
             this.TrainingSizeCounter.TabIndex = 6;
-            this.TrainingSizeCounter.Value = new decimal(new int[] {700, 0, 0, 0});
+            this.TrainingSizeCounter.Value = new decimal(new int[] {
+            700,
+            0,
+            0,
+            0});
             // 
             // progressBar1
             // 
@@ -298,11 +338,12 @@
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.infoStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 802);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.infoStatusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 800);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1222, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(1222, 32);
             this.statusStrip1.TabIndex = 11;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -350,11 +391,37 @@
             this.btnCamera.UseVisualStyleBackColor = true;
             this.btnCamera.Click += new System.EventHandler(this.btnCamera_Click);
             // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(776, 738);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(97, 44);
+            this.buttonSave.TabIndex = 17;
+            this.buttonSave.Text = "Save";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
+            // buttonLoad
+            // 
+            this.buttonLoad.Location = new System.Drawing.Point(879, 737);
+            this.buttonLoad.Name = "buttonLoad";
+            this.buttonLoad.Size = new System.Drawing.Size(97, 44);
+            this.buttonLoad.TabIndex = 17;
+            this.buttonLoad.Text = "Load";
+            this.buttonLoad.UseVisualStyleBackColor = true;
+            this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // NeuralNetworksStand
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1222, 832);
+            this.Controls.Add(this.buttonLoad);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.btnCamera);
             this.Controls.Add(this.StatusLabel);
             this.Controls.Add(label7);
@@ -368,17 +435,18 @@
             this.MaximizeBox = false;
             this.Name = "NeuralNetworksStand";
             this.Text = "Банальный студенческий перспетрон";
-            ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize) (this.classCounter)).EndInit();
-            ((System.ComponentModel.ISupportInitialize) (this.AccuracyCounter)).EndInit();
-            ((System.ComponentModel.ISupportInitialize) (this.EpochesCounter)).EndInit();
-            ((System.ComponentModel.ISupportInitialize) (this.TrainingSizeCounter)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.classCounter)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AccuracyCounter)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.EpochesCounter)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TrainingSizeCounter)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -404,6 +472,10 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label StatusLabel;
         private System.Windows.Forms.Button btnCamera;
+        private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.Button buttonLoad;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

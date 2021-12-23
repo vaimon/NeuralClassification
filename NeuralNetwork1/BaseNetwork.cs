@@ -58,5 +58,7 @@ namespace NeuralNetwork1
         {
             TrainProgress?.Invoke(progress, error, time);
         }
+
+        public abstract void save(string filename);
     }
 }
